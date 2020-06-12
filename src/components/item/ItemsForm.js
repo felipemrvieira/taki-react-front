@@ -12,8 +12,9 @@ class ArticleForm extends Component {
     super(props)
 
     this.state = {
-      business: {},
+      item: {},
       redirect: false,
+      theme: 'snow',
       submited: false,
       date: new Date()
     }
@@ -21,52 +22,21 @@ class ArticleForm extends Component {
 
   }
 
-  loadCategories = async () => {
-    try {
-      const response = await api.get("/categories");
-      const categories = response.data.data;
-      this.setState({ ...this.state, categories: categories })
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
-  loadGalleries = async () => {
+  loadItem = async () => {
     try {
-      const response = await api.get("/galleries");
-      const galleries = response.data.data;
-      this.setState({ ...this.state, galleries: galleries })
-      console.log(galleries)
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  loadTypes = async () => {
-    try {
-      const response = await api.get("/types");
-      const types = response.data.data;
-      this.setState({ ...this.state, types: types })
-      console.log(this.state.types)
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  loadBusiness = async () => {
-    try {
-      const response = await api.get(`/businesses/${this.props.businessId}`);
-      const business = response.data
-      console.log(business)
-      this.setState({ ...this.state, business })
+      const response = await api.get(`/items/${this.props.itemId}`);
+      const item = response.data
+      console.log(item)
+      this.setState({ ...this.state, item })
     } catch (err) {
       console.log(err);
     }
   }
 
   componentDidMount() {
-    if (this.props.businessId) {
-      this.loadBusiness()
+    if (this.props.itemId) {
+      this.loadItem()
     }
     // this.loadCategories();
     // this.loadGalleries();
@@ -74,26 +44,6 @@ class ArticleForm extends Component {
 
   }
 
-  handleChangeSelectMultiCategories = selectedCategories => {
-    this.setState(
-      { selectedCategories },
-      () => console.log(`Option selected:`, this.state.selectedCategories)
-    );
-  };
-
-  handleChangeSelectMultiGalleries = selectedGalleries => {
-    this.setState(
-      { selectedGalleries },
-      () => console.log(`Option selected:`, this.state.selectedGalleries)
-    );
-  };
-
-  handleChangeType = selectedTypes => {
-    this.setState(
-      { selectedTypes },
-      () => console.log(`Option selected:`, this.state.selectedTypes)
-    );
-  };
 
 
   // Captura inputs do form exceto body
@@ -103,25 +53,18 @@ class ArticleForm extends Component {
     switch (event.target.id) {
       case 'name':
         this.setState(prevState => ({
-          business: {
-            ...prevState.business,
+          item: {
+            ...prevState.item,
             name: value
           }
         }))
         break;
-      case 'address':
+      case 'price':
         this.setState(prevState => ({
-          business: {
-            ...prevState.business,
-            address: value
-          }
-        }))
-        break;
-      case 'city':
-        this.setState(prevState => ({
-          business: {
-            ...prevState.business,
-            city: value
+          item: {
+            ...prevState.item,
+            price: value,
+            business_id: this.props.businessId
           }
         }))
         break;
@@ -130,11 +73,11 @@ class ArticleForm extends Component {
     }
   }
 
-  editBusiness = async (business) => {
-    console.log(JSON.stringify(business))
+  editItem = async (item) => {
+    console.log(JSON.stringify(item))
 
     try {
-      await api.patch(`/businesses/${this.props.businessId}`, { business });
+      await api.patch(`/items/${this.props.itemId}`, { item });
 
       this.setState({
         redirect: true
@@ -144,9 +87,9 @@ class ArticleForm extends Component {
     }
   }
 
-  createBusiness = async (business) => {
+  createItem = async (item) => {
     try {
-      const response = await api.post(`/businesses`, { business });
+      const response = await api.post(`/items`, { item });
 
       this.setState({
         redirect: true
@@ -161,16 +104,16 @@ class ArticleForm extends Component {
     event.preventDefault();
     this.setState({ submited: true })
 
-    const { business } = this.state;
+    const { item } = this.state;
 
-    if (this.props.businessId) {
-      this.editBusiness(business);
-      console.log("Edita business")
-      console.log(business)
+    if (this.props.itemId) {
+      this.editItem(item);
+      console.log("Edita item")
+      console.log(item)
     } else {
-      this.createBusiness(business);
-      console.log("Cria business")
-      console.log(business)
+      this.createItem(item);
+      console.log("Cria item")
+      console.log(item)
     }
   }
 
@@ -179,7 +122,7 @@ class ArticleForm extends Component {
     if (this.state.redirect) { return <Redirect to="/businesses" />; }
 
     const {
-      business
+      item
     } = this.state;
 
     return (
@@ -210,33 +153,19 @@ class ArticleForm extends Component {
                     placeholder="Type here"
                     onChange={this.handleChange}
                     name="name"
-                    value={business.name}
+                    value={item.name}
                     required
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="titulo">Address</label>
-                  <input type="text"
+                  <label htmlFor="titulo">Price</label>
+                  <input type="number"
                     className="form-control"
-                    maxLength="85"
-                    id="address"
+                    id="price"
                     placeholder="Type here"
                     onChange={this.handleChange}
-                    name="address"
-                    value={business.address}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="titulo">City</label>
-                  <input type="text"
-                    className="form-control"
-                    maxLength="85"
-                    id="city"
-                    placeholder="Type here"
-                    onChange={this.handleChange}
-                    name="city"
-                    value={business.city}
+                    name="price"
+                    value={item.price}
                     required
                   />
                 </div>
@@ -249,7 +178,7 @@ class ArticleForm extends Component {
                   {
                     this.state.submited ?
                       "Wait..." :
-                      this.props.businessId ? "Update" : "Create"
+                      this.props.itemId ? "Update" : "Create"
                   }
                 </button>
 

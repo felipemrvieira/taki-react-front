@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-
-
 import Moment from 'react-moment'
 import { Link } from 'react-router-dom'
 
@@ -17,17 +15,13 @@ const translations = {
 
 const columns = [
 
-    {
-        Header: 'Name',
-        accessor: 'name',
-    },
-    {
-      Header: 'Address',
-      accessor: 'address',
+  {
+    Header: 'Name',
+    accessor: 'name',
   },
   {
-    Header: 'City',
-    accessor: 'city',
+    Header: 'Price',
+    accessor: 'price',
   },
 
     {
@@ -35,7 +29,7 @@ const columns = [
         accessor: 'id',
         Cell: row => (
             <div>
-              <Link className="btn btn-light btn-icon-split" to={`/businesses/${row.value}`}>
+              <Link className="btn btn-light btn-icon-split" to={`/items/${row.value}`}>
                 <span className="icon text-gray-600">
                     <i className="fas fa-arrow-right"></i>
                 </span>
@@ -49,9 +43,9 @@ const columns = [
 function BusinessTable(props) {
     return (
         <ReactTable className="shadow -striped -highlight mb-4"
-            data={props.businesses}
+            data={props.items}
             columns={columns}
-            noDataText="There are no registered businesses yet!"
+            noDataText="There are no registered items yet!"
             defaultPageSize={10}
             {...translations}
         />

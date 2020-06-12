@@ -5,7 +5,7 @@ import Topbar from '../../template/Topbar';
 import Footer from '../../template/Footer';
 import LogoutModal from '../../template/LogoutModal';
 
-import BusinessForm from '../../components/business/BusinessForm'
+import ItemsForm from '../../components/item/ItemsForm'
 
 class NewsNewPage extends Component {
 
@@ -26,9 +26,9 @@ class NewsNewPage extends Component {
                                 <div className="container-fluid">
 
                                     {/* <!--  Page Heading  --> */}
-                                    <h1 className="h3 mb-4 text-gray-800">New Business</h1>
+                                    <h1 className="h3 mb-4 text-gray-800">New item for business {this.props.match.params.id}</h1>
 
-                                    <BusinessForm />
+                                    <ItemsForm  businessId={this.props.match.params.id}/>
 
                                 </div>
                                 {/*  /.container-fluid  */}

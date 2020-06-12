@@ -4,11 +4,9 @@ import Sidebar from '../../template/Sidebar';
 import Topbar from '../../template/Topbar';
 import Footer from '../../template/Footer';
 import LogoutModal from '../../template/LogoutModal';
+import ItemForm from '../../components/item/ItemsForm'
 
-import BusinessForm from '../../components/business/BusinessForm'
-
-class NewsNewPage extends Component {
-
+class BusinessEditPage extends Component {
     render() {
         return (
             <div className="App">
@@ -26,9 +24,9 @@ class NewsNewPage extends Component {
                                 <div className="container-fluid">
 
                                     {/* <!--  Page Heading  --> */}
-                                    <h1 className="h3 mb-4 text-gray-800">New Business</h1>
+                                    <h1 className="h3 mb-4 text-gray-800">Edit Item {this.props.match.params.id} </h1>
 
-                                    <BusinessForm />
+                                    <ItemForm itemId={this.props.match.params.id}/>
 
                                 </div>
                                 {/*  /.container-fluid  */}
@@ -55,4 +53,4 @@ class NewsNewPage extends Component {
     }
 }
 
-export default NewsNewPage;
+export default BusinessEditPage;

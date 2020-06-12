@@ -8,6 +8,12 @@ import BusinessNewPage from './pages/Business/BusinessNewPage';
 import BusinessShowPage from './pages/Business/BusinessShowPage';
 import BusinessEditPage from './pages/Business/BusinessEditPage';
 
+
+import ItemsIndexPage from './pages/Items/ItemsIndexPage';
+import ItemsNewPage from './pages/Items/ItemsNewPage';
+import ItemsShowPage from './pages/Items/ItemsShowPage';
+import ItemsEditPage from './pages/Items/ItemsEditPage';
+
 import UsersIndexPage from './pages/Users/UsersIndexPage';
 import UsersNewPage from './pages/Users/UsersNewPage';
 import UsersShowPage from './pages/Users/UsersShowPage';
@@ -38,12 +44,20 @@ const Routes = () => (
 
       <PrivateRoute path="/" exact={true} component={BusinessIndexPage} />
 
-      {/* News */}
+      {/* Business */}
       <PrivateRoute path="/businesses" exact={true} component={BusinessIndexPage} />
       <PrivateRoute path="/businesses/new" exact={true} component={BusinessNewPage} />
       <PrivateRoute path="/businesses/:id" exact={true} component={BusinessShowPage} />
       <PrivateRoute path="/businesses/edit/:id" exact={true} component={BusinessEditPage} />
-      {/* News */}
+      {/* Business */}
+
+      {/* Items */}
+      {/* <PrivateRoute path="/items" exact={true} component={ItemsIndexPage} /> */}
+      <PrivateRoute path="/items/new/:id" exact={true} component={ItemsNewPage} />
+      <PrivateRoute path="/items/:id" exact={true} component={ItemsShowPage} />
+      <PrivateRoute path="/items/edit/:id" exact={true} component={ItemsEditPage} />
+      {/* Items */}
+
       {/* Users */}
       <PrivateRoute path="/users" exact={true} component={UsersIndexPage} />
       <PrivateRoute path="/users/new" exact={true} component={UsersNewPage} />

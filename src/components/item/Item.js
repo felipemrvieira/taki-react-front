@@ -4,8 +4,6 @@ import api from "../../services/api";
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
-import ItemsTable from '../item/ItemsTable';
-
 
 const divStyle = {
   textAlign: 'center',
@@ -22,12 +20,12 @@ const divImgStyle = {
 };
 
 
-class Business extends Component {
+class Item extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      business: {
-        items:[{}]
+      item: {
+        business:{}
       },
       redirect: false,
       show: false,
@@ -36,27 +34,25 @@ class Business extends Component {
 
   }
 
-  loadBusiness = async () => {
+  loadItem = async () => {
     try {
-      const response = await api.get(`businesses/${this.props.idBusiness}`);
-      const business = response.data;
-      console.log(business)
-      console.log(business.items)
-      this.setState({ business });
+      const response = await api.get(`items/${this.props.idItem}`);
+      const item = response.data;
+      console.log(item)
+      this.setState({ item });
     } catch (err) {
       console.log(err);
     }
   }
 
   componentDidMount() {
-    this.loadBusiness();
+    this.loadItem();
   }
 
-  deleteBusiness = async (business) => {
+  deleteItem = async (item) => {
     try {
       if (window.confirm(`Are you sure?`)) {
-        const response = await api.delete(`businesses/${this.props.idBusiness}`);
-        this.setState({ ...this.state, business: response.data })
+        const response = await api.delete(`items/${this.props.idItem}`);
         this.setState({
           redirect: true
         })
@@ -66,16 +62,13 @@ class Business extends Component {
     }
   }
 
-
   render() {
-
 
     if (this.state.redirect) {
       return <Redirect to="/businesses" />;
     }
 
-    const business = this.state.business;
-    console.log(this.state.business.items)
+    const item = this.state.item;
 
     return (
       <div className="">
@@ -94,30 +87,26 @@ class Business extends Component {
                   <div id="dropdown-article-new" className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
                     <div className="dropdown-header">Actions:</div>
-                    {/* <div className="dropdown-item" href="#">Publicar</div> */}
-                    <Link className="dropdown-item" to={`/businesses/edit/${business.id}`}>
+                    <Link className="dropdown-item" to={`/items/edit/${item.id}`}>
                       Edit
                     </Link>
-                    {/* <div className="dropdown-item" href="#">Marcar para revisão</div> */}
                     <div className="dropdown-divider"></div>
                     <div
                       className="dropdown-item"
                       href="#"
-                      onClick={() => this.deleteBusiness(business)}
+                      onClick={() => this.deleteItem(item)}
                     >Excluir</div>
                   </div>
                 </div>
               </div>
               {/* <!-- Card Body --> */}
               <div className="card-body">
-                <p><strong>Name: </strong>{business.name}</p>
-                <p><strong>Address: </strong>{business.address}</p>
-                <p><strong>City:</strong>{business.city}</p>
-
-                <br />
+                <p><strong>Name: </strong>{item.name}</p>
+                <p><strong>Price: </strong>{item.price}</p>
+                <p><strong>Business: </strong>{item.business.name}</p>
                 <p><strong>Published: </strong>
                   <Moment format="DD.MM.YYYY - HH:MM">
-                    {business.published_at}
+                    {item.published_at}
                   </Moment>
                 </p>
 
@@ -125,25 +114,10 @@ class Business extends Component {
               </div>
             </div>
             {/* Card */}
-
-
-            <ItemsTable items={this.state.business.items} />
-
-            <Link className="btn btn-primary btn-icon-split" to={`/items/new/${business.id}`}>
-              <span class="icon text-white-50">
-                <i class="fas fa-flag"></i>
-              </span>
-              <span class="text">Create new item</span>
-            </Link>
-
-            <br/><br/>
-
           </div>
         </div>
 
-        <div className="row">
-          {/* {this.renderCategories()} */}
-        </div>
+
 
 
       </div>
@@ -152,5 +126,5 @@ class Business extends Component {
   }
 }
 
-export default Business;
+export default Item;
 

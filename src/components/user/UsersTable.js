@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+
 import { Link } from 'react-router-dom'
 
 const translations = {pageText:'Página', ofText: 'de', rowsText: 'Linhas', previousText: 'Anterior', nextText: 'Próxima', loadingText: 'Carregando...'};
